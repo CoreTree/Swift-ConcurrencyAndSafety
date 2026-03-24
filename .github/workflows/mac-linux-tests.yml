@@ -1,0 +1,21 @@
+name: Testing
+run-name: ${{ matrix.os }} Swift Testing
+runs-on: ${{ matrix.os }}
+strategy:
+  matrix:
+    os: [ubuntu-latest, macos-latest]
+    swift: ["6.2.4"]
+on: [push]
+steps:
+  - uses: swift-actions/setup-swift@v3
+    with:
+      swift-version: ${{ matrix.swift }}
+  - name: Get Swift Version
+    run: swift --version
+  - name: Clone Repo
+    uses: actions/checkout@v2
+  - name: Build
+    run: swift build ConcurrencyAndSafety
+  - name: Test
+    run: swift test -v --skip-build
+    
